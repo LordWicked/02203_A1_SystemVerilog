@@ -7,7 +7,7 @@ The goal of this assignment is to design, simulate, and implement a digital circ
 The design flow follows a **top-down, simulation-based methodology** and targets the **Xilinx Nexys 4 DDR / Nexys A7 FPGA board**.
 
 
-Otto Westy Rasmussen, S203838, S203838@dtu.dk
+Developers: Otto Westy Rasmussen
 
 
 ## Repository Structure
