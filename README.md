@@ -1,6 +1,6 @@
 # 02203 Assignment 1 – Greatest Common Divisor (SystemVerilog)
 
-This repository contains a **SystemVerilog implementation** of **Assignment 1** in *02203 Design of Digital Systems (Fall 2025)* at DTU.  
+This repository contains a **SystemVerilog implementation** of **Assignment 1** in *02203 Design of Digital Systems (Fall 2026)* at DTU.  
 
 The goal of this assignment is to design, simulate, and implement a digital circuit that computes the **Greatest Common Divisor (GCD)** of two positive integers using **Euclid’s algorithm**.  
 
@@ -41,4 +41,3 @@ Otto Westy Rasmussen, S203838, S203838@dtu.dk
 
 ## Notes
 - This repo provides a **SystemVerilog** version of the assignment (original was in VHDL).  
-- Use at your own risk if substituting for the official VHDL files. 
