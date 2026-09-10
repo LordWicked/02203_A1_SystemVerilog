@@ -1,0 +1,5 @@
+!.gitignore
+task1/*
+!task1/*.sv
+!task1/*.xdc
+task*/build/
