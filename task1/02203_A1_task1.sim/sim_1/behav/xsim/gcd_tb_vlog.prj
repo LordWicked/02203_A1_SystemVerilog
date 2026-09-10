@@ -1,0 +1,10 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  --include "../../../../../../../../../../AMDDesignTools/2026.1/Vivado/data/rsb/busdef" \
+"../../../../02203_A1_task1.srcs/sources_1/imports/task1/gcd_top.sv" \
+"../../../../02203_A1_task1.srcs/sim_1/imports/task1/gcd_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
