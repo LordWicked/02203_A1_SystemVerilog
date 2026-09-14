@@ -35,9 +35,10 @@ module debounce #(
     if (reset) begin
       sw_reg1 <= 0;
       sw_reg2 <= 0;
-    end else begin
-      sw_reg2 <= sw_reg1;
-      sw_reg1 <= sw;
+    end 
+    else begin
+      sw_reg2 <= sw_reg1;   // sw_reg2 is the value used in the code, it is a safe value because had time to stabilize when it was in sw_reg1
+      sw_reg1 <= sw;       // store the value during one clock cycle to stabilize and then be given to reg 2 to be used in the code
     end
   end
 

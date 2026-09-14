@@ -20,22 +20,131 @@ module gcd (
     output logic          ack,    // Input received / Computation is complete.
     output logic [15 : 0] C       // The result.
 );
-    typedef enum logic [1 : 0] { ... } state_t; // Input your own state names here
+    typedef enum logic [2 : 0] { waitA, getA, waitB, getB, calculY, AsmallerB, AgreaterB, transmitC } state_t; // Input your own state names here
 
     shortint unsigned reg_a, next_reg_a, reg_b, next_reg_b;
     
     state_t state, next_state;
+
+    //added by me
+    logic [1:0] FN_ALU;
+    shortint unsigned Y;
+    logic Nflag, Zflag;
     
     // Combinatorial logic
+    //Control block
     always_comb begin
+
+        ack = 0;
+        C = 0;
+        next_state = state;
+        next_reg_a = reg_a;
+        next_reg_b = reg_b;
+        FN_ALU = 2'b00;
+
+        
         case (state)
-            // <COMBINATORIAL BODY> 
+            // <COMBINATORIAL BODY>
+	    waitA: begin
+            ack = 0;
+            if (req) begin
+                next_state = getA;
+            end
+        end
+        getA: begin
+            ack = 1;
+            next_reg_a = AB;  // store A
+            if (!req) begin
+               next_state = waitB;
+            end
+        end
+        waitB: begin
+            ack = 0;
+            if (req) begin
+              next_state = getB;
+            end
+        end
+        getB: begin
+            ack = 1;
+            next_reg_b = AB;
+            if (!req) begin
+              next_state = calculY;
+            end
+        end
+        calculY: begin
+            ack = 0;
+            FN_ALU = 2'b00;
+            if (Zflag) begin
+                next_state = transmitC;
+            end else if (Nflag) begin
+                next_state = AsmallerB;    
+            end else begin
+                next_state = AgreaterB;
+            end
+        end
+
+        AsmallerB: begin
+            ack = 0;
+            FN_ALU = 2'b01;
+            next_state = calculY;
+            next_reg_b = Y;
+        end
+
+        AgreaterB: begin   //maybe possible to remove it
+            ack = 0;
+            FN_ALU = 2'b00; 
+            next_state = calculY;
+            next_reg_a = Y;
+        end
+
+        transmitC: begin
+            ack = 1;
+            C = reg_a;     // can be reg_a or reg_b because they are = anyway
+            if (!req) begin
+                next_state = waitA;
+            end
+        end
+        
+
         endcase
     end
 
+    // ALU block
+    always_comb begin
+        case (FN_ALU)
+        
+        2'b00: 
+            Y = reg_a - reg_b;
+        2'b01: 
+            Y = reg_b - reg_a;
+        2'b10: 
+            Y = reg_a;
+        2'b11: 
+            Y = reg_b;
+
+        endcase
+
+        Nflag = Y[15];
+        if (!Y) begin
+            Zflag = 1;
+        end else begin
+            Zflag = 0;
+        end
+
+    end
+
+
         // Register
     always_ff @(posedge clk or posedge reset) begin
-        // <REGISTER BODY>
+        if (reset) begin
+            state <= waitA;
+            reg_a     <= 0;
+            reg_b     <= 0;
+        end else begin
+            state <= next_state;
+            reg_a     <= next_reg_a;
+            reg_b     <= next_reg_b;
+        end
     end
 
 endmodule
