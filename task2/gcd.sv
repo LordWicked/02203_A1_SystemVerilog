@@ -20,7 +20,7 @@ module gcd (
     output logic          ack,    // Input received / Computation is complete.
     output logic [15 : 0] C       // The result.
 );
-    typedef enum logic [2 : 0] { waitA, getA, waitB, getB, calculY, AsmallerB, AgreaterB, transmitC } state_t; // Input your own state names here
+    typedef enum logic [3 : 0] { waitA, getA, send_ack, waitB, getB, calculY, AsmallerB, AgreaterB, transmitC } state_t; // Input your own state names here
 
     shortint unsigned reg_a, next_reg_a, reg_b, next_reg_b;
     
@@ -52,8 +52,12 @@ module gcd (
             end
         end
         getA: begin
-            ack = 1;
+            ack = 0;
             next_reg_a = AB;  // store A
+            next_state = send_ack;
+        end
+        send_ack: begin
+            ack = 1;
             if (!req) begin
                next_state = waitB;
             end
@@ -65,12 +69,11 @@ module gcd (
             end
         end
         getB: begin
-            ack = 1;
+            ack = 0;
             next_reg_b = AB;
-            if (!req) begin
-              next_state = calculY;
-            end
+            next_state = calculY;
         end
+
         calculY: begin
             ack = 0;
             FN_ALU = 2'b00;
