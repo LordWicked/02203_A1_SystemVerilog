@@ -1,11 +1,13 @@
 // -----------------------------------------------------------------------------
 //
-//  Title      :  System Verilog FSMD implementation template for GCD
+//  Title      :  System Verilog FSMD implementation template for GCD using the Stein algorithm.
 //             :
 //  Developers :  Otto Westy Rasmussen
 //             :
 //  Purpose    :  This is a template for the FSMD (finite state machine with datapath) 
 //             :  implementation of the GCD circuit
+//
+//                To run this, change "gcd" in gcd_tb and/or gcd_top to "gcd_stein".
 //             :
 //  Revision   :  02203 fall 2025 v.1.0
 //
